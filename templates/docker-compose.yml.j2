@@ -1,0 +1,35 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+# {{ ansible_managed }}
+# {{ template_fullpath }}
+
+name: {{ docker_project_slug }}
+
+services:
+
+  gogs:
+    container_name: {{ docker_project_slug }}
+    image: gogs/gogs:{{ gogs_version }}
+    restart: unless-stopped
+
+    {{ docker_project_compose_service_additional_options | indent(4) }}
+
+    volumes:
+      # Gogs data directory
+      - ./data:/data
+      # Gogs configuration
+      - ./conf/app.ini:/data/gogs/conf/app.ini
+      # Git repositories
+      - {{ gogs_git_repositories | default('./data/git/gogs-repositories') }}:/data/git/gogs-repositories
+      # Gogs logs
+      - {{ gogs_log_directory | default('./data/gogs/log') }}:/data/gogs/log
+
+    labels:
+      {{ traefik_project_base_labels | indent(6) }}
+
+      # What's up Docker? - https://github.com/getwud/wud
+      wud.watch.digest: true
+
+networks:
+  {{ docker_project_default_network | indent(2) }}
+
+{{ docker_project_compose_additional_options }}

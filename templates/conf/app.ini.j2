@@ -1,0 +1,122 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+; {{ ansible_managed }}
+; {{ template_fullpath }}
+
+; The brand name of the application, can be your company or team name.
+BRAND_NAME = {{ gogs_brand_name }}
+; The system user who should be running the applications. It has no effect on Windows,
+; otherwise, it should match the value of $USER environment variable.
+;RUN_USER = git
+; The running mode of the application, can be either "dev", "prod" or "test".
+RUN_MODE = prod
+
+[server]
+; The public-facing URL for the application.
+EXTERNAL_URL = https://{{ gogs_domain }}/
+; The public-facing domain name for the application.
+DOMAIN           = {{ gogs_domain }}
+; The port number to be listened by the application.
+;HTTP_PORT        = 3000
+; Whether to disable using CDN for static files regardless.
+OFFLINE_MODE     = true
+; Whether to disable SSH access to the application entirely.
+;DISABLE_SSH      = false
+; The port number to be exposed in SSH clone URL.
+SSH_PORT         = {{ gogs_ssh_port }}
+; Whether to start a builtin SSH server.
+;START_SSH_SERVER = false
+
+[repository]
+; The root path for storing managed repositories, default is "~/gogs-repositories"
+ROOT = /data/git/gogs-repositories
+
+[database]
+; The database backend, either "postgres", "mysql" "sqlite3" or "mssql".
+; You can connect to TiDB with MySQL protocol.
+TYPE = {{ gogs_database_type }}
+HOST = {{ gogs_database_host }}
+NAME = {{ gogs_database_name }}
+USER = {{ gogs_database_user }}
+PASSWD = {{ gogs_database_passwd }}
+; For "postgres" only
+SCHEMA = {{ gogs_database_schema }}
+; For "postgres" only, either "disable", "require" or "verify-full".
+SSL_MODE = {{ gogs_database_ssl_mode }}
+; For "sqlite3" only, make sure to use absolute path.
+PATH = {{ gogs_database_path }}
+
+[security]
+; Whether to show the install page, set this to "true" to bypass it.
+INSTALL_LOCK = true
+; The secret to encrypt cookie values, 2FA code, etc.
+; !!CHANGE THIS TO KEEP YOUR USER DATA SAFE!!
+SECRET_KEY   = {{ gogs_secret_key }}
+
+[email]
+; Whether to enable the email service.
+ENABLED = true
+; The SMTP server with its port, e.g. smtp.mailgun.org:587, smtp.gmail.com:587, smtp.qq.com:465
+; If the port ends is "465", SMTPS will be used. Using STARTTLS on port 587 is recommended per RFC 6409.
+; If the server supports STARTTLS it will always be used.
+HOST = {{ gogs_email_host }}
+; The email from address (RFC 5322). This can be just an email address, or the `"Name" <email@example.com>` format.
+FROM = {{ gogs_email_from }}
+; The login user.
+USER = {{ gogs_email_user }}
+; The login password.
+PASSWD = `{{ gogs_email_passwd }}`
+
+[auth]
+; Whether to require email confirmation for adding new email addresses.
+; Enable this option will also require user to confirm the email for registration.
+REQUIRE_EMAIL_CONFIRMATION = {{ gogs_require_email_confirmation }}
+; Whether to disallow anonymous users visiting the site.
+REQUIRE_SIGNIN_VIEW = {{ gogs_require_signin_view }}
+; Whether to disable self-registration. When disabled, accounts would have to be created by admins.
+DISABLE_REGISTRATION = {{ gogs_disable_registration }}
+; Whether to enable captcha validation for registration
+ENABLE_REGISTRATION_CAPTCHA = {{ gogs_enable_registration_captcha }}
+
+[user]
+; Whether to enable email notifications for users.
+ENABLE_EMAIL_NOTIFICATION = true
+
+[session]
+; The session provider, either "memory", "file", or "redis".
+PROVIDER = file
+
+[http]
+; The value for "Access-Control-Allow-Origin" header, default is not to present.
+ACCESS_CONTROL_ALLOW_ORIGIN = https://{{ gogs_domain }}/
+
+[picture]
+; Whether to disable Gravatar, this value will be forced to be true in offline mode.
+;DISABLE_GRAVATAR = false
+; Whether to enable federated avatar lookup uses DNS to discover avatar associated
+; with emails, see https://www.libravatar.org for details.
+; This value will be forced to be false in offline mode or when Gravatar is disabled.
+ENABLE_FEDERATED_AVATAR = true
+
+[log]
+; The root path for all log files, default is "log/" subdirectory.
+ROOT_PATH = /data/gogs/log
+; Can be "console", "file", "slack" and "discord".
+; Use comma to separate multiple modes, e.g. "console, file"
+MODE = file
+; Either "Trace", "Info", "Warn", "Error", "Fatal", default is "Trace"
+LEVEL = Info
+
+[mirror]
+; Defines the default interval (in hours) until the next sync for a mirror (after a successful mirror sync).
+; It can be overridden individually for each mirror repository in the settings.
+DEFAULT_INTERVAL = 4
+
+[prometheus]
+; Whether to enable Prometheus metrics.
+;ENABLED = true
+; Whether to enable HTTP Basic Authentication to protect metrics data.
+ENABLE_BASIC_AUTH = true
+; The username for HTTP Basic Authentication.
+BASIC_AUTH_USERNAME = {{ gogs_basic_auth_username }}
+; The password for HTTP Basic Authentication.
+BASIC_AUTH_PASSWORD = `{{ gogs_basic_auth_password }}`

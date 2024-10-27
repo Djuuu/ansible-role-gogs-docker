@@ -1,0 +1,3 @@
+---
+
+docker_project_name: "{{ gogs_project_name }}"
