@@ -30,7 +30,7 @@ Available role variables are listed below, along with default values (see `defau
 
 gogs_project_name: gogs
 
-# Docker project dynamic vars (uses `docker_project_name` prefix, adapt if overriden)
+# Docker project dynamic vars (uses `docker_project_name` prefix, adapt if overridden)
 
 # Port targeted by Traefik router
 gogs_traefik_loadbalancer_server_port: 3000
