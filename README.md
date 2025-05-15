@@ -36,7 +36,7 @@ gogs_project_name: gogs
 gogs_traefik_loadbalancer_server_port: 3000
 
 # Main service additional docker-compose options (ex: cpu_shares, deploy, ...)
-gogs_compose_service_additional_options: |
+gogs_service_additional_options: |
   #ports:
   #  - "{{ gogs_http_port }}:3000"
   #  - "{{ gogs_ssh_port }}:22"
